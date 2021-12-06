@@ -6,7 +6,9 @@ const Nav = (props) => {
     const {
         categories = [],
         setCurrentCategory,
-        currentCategory
+        currentCategory,
+        contactSelected,
+        setContactSelected
     } = props;
 
    useEffect(() => {
@@ -23,10 +25,11 @@ const Nav = (props) => {
       <nav>
         <ul className="flex-row">
           <li className="mx-2">
-            <a data-testid="about" href="#about">About me</a>
+            {/* hides contact component when about it clicked */}
+            <a data-testid="about" href="#about" onClick={() => setContactSelected(false)}>About me</a>
           </li>
-          <li className={"mx-2"}>
-            <span>Contact</span>
+          <li className={`mx-2 ${contactSelected && 'navActive'}`}>
+            <span onClick={() => setContactSelected(true)}>Contact</span>
           </li>
           {/* map over array to display each category */}
           {categories.map((category) => (
@@ -39,12 +42,15 @@ const Nav = (props) => {
           */
             // parenthsis used here to return a single jsx element
             <li 
-              className={`mx-1 ${currentCategory.name === category.name && 'navActive'}`} 
+              className={`mx-1 ${
+                currentCategory.name === category.name && !contactSelected && 'navActive'
+              }`} 
               key={category.name}
             >
               <span 
                 onClick={() => {
-                    setCurrentCategory(category)
+                    setCurrentCategory(category);
+                    setContactSelected(false);
                 }}
                 >
                 {capitalizeFirstLetter(category.name)}
