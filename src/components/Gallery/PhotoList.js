@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Modal from '../Modal';
 
 
 // this component will now handle photo rendering - which will remove from the gallery component
@@ -102,6 +103,14 @@ const PhotoList = ({ category }) => {
         },
       ]);
 
+      const [currentPhoto, setCurrentPhoto ] = useState();
+      const [isModalOpen, setIsModalOpen] = useState(false);
+
+      const toggleModal = (image, i) => {
+        setCurrentPhoto({...image, index: i}); // have questions about this
+        setIsModalOpen(true);
+      }
+
       /*
             Going through each photo in the photos array - to find every photo that matches the category selected by the user.
             If a photo matches the condition its returned in an array
@@ -114,18 +123,22 @@ const PhotoList = ({ category }) => {
 
     return (
         <div>
-        <div className="flex-row">
+           {/* conditional rendering : modal is only shown when isModalOpen is true */}
+          {isModalOpen && <Modal currentPhoto={currentPhoto} onClose={toggleModal} />}
+          <div className="flex-row">
           {currentPhotos.map((image, i) => (
             <img
-              src={require(`../../assets/small/${category}/${i}.jpg`)}
+              src={require(`../../assets/small/${category}/${i++}.jpg`).default}
               alt={image.name}
               className="img-thumbnail mx-1"
+              // clicking here calls toggleModal function. - This makes the modal visible 
+              onClick={() => toggleModal(image, i)}
               key={image.name}
             />
           ))}
         </div>
       </div>
-    )
-}
+    );
+};
 
 export default PhotoList;
