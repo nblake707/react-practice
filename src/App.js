@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import Gallery from './components/Gallery/index';
 import ContactForm from './components/contact';
 
+
 function App() {
 
   // lifted up the state from the nav component - this allows us to pass this info as props to the nav component 
